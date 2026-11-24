@@ -80,13 +80,38 @@ austen_words
 
 ```{r}
 get_sentiments("nrc") %>% 
-  filter(sentiment=="joy")
+  filter(sentiment=="joy")->nrc_filter
 
 get_sentiments("afinn") %>%
-  filter(value>=1)
+  filter(value>=1)->afinn_filter
 
 get_sentiments("bing") %>%
-  filter(sentiment=="positive")
+  filter(sentiment=="positive")->bing_filter
+```
+
+```{r}
+emma_words <- austen_books() %>%
+  filter(book == "Emma") %>%
+  unnest_tokens(word, text)
+
+bing<- emma_words %>%
+  inner_join(bing_filter, by = "word")%>%
+  count(word, sentiment, sort = TRUE)
+
+
+afinn<- emma_words %>%
+  inner_join(afinn_filter, by = "word")%>%
+  count(word, value, sort = TRUE)
+
+nrc <-emma_words %>%
+  inner_join(nrc_filter, by = "word")%>%
+  count(word, sentiment, sort = TRUE)
+
+emma_sentiments <- bind_rows(bing, afinn, nrc) %>%
+  filter(n > 50)%>%
+  select(word,n)
+
+emma_sentiments
 ```
 
 1.  **Push to GitHub**
