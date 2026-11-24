@@ -34,6 +34,7 @@ library(tidytext)
 library(janeaustenr)
 library(textdata)
 library(stringi)
+library(wordcloud)
 ```
 
 ### **Tasks**:
@@ -77,7 +78,18 @@ austen_words
       - Filter for frequently occurring words (`n > 50`).
       - Visualize using a **bar chart** (`ggplot2`) and a **word cloud** (`wordcloud`).
 
-2.  **Push to GitHub**
+```{r}
+get_sentiments("nrc") %>% 
+  filter(sentiment=="joy")
+
+get_sentiments("afinn") %>%
+  filter(value>=1)
+
+get_sentiments("bing") %>%
+  filter(sentiment=="positive")
+```
+
+1.  **Push to GitHub**
 
     - Push your complete rendred qmd (`.html` file) to a **GitHub repository**.
 
