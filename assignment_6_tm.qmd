@@ -50,14 +50,20 @@ library(stringi)
       mutate(linenumber=row_number(),
              is_chapter=str_detect(text, regex("^chapter [\\divxlc]", ignore_case = TRUE)),
               chapter=cumsum(is_chapter))%>%
-      select(text,book,linenumber,chapter)
+      select(text,book,linenumber,chapter)->austen_books_1
     ```
 
 2.  **Tokenization**
 
-    - Use `unnest_tokens()` to tokenize text into individual words.
+    - Use `unnest_tokens()` to tokenize text into individual words
 
-3.  **Sentiment Analysis**
+```{r}
+austen_words <-austen_books_1 %>%
+  unnest_tokens(word,text)
+austen_words
+```
+
+1.  **Sentiment Analysis**
 
     - Filter joy/positive words from **each** of the three sentiment lexicons:
 
@@ -71,7 +77,7 @@ library(stringi)
       - Filter for frequently occurring words (`n > 50`).
       - Visualize using a **bar chart** (`ggplot2`) and a **word cloud** (`wordcloud`).
 
-4.  **Push to GitHub**
+2.  **Push to GitHub**
 
     - Push your complete rendred qmd (`.html` file) to a **GitHub repository**.
 
