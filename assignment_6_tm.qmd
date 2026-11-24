@@ -44,6 +44,15 @@ library(stringi)
     - Group by book and detect chapter boundaries using regex.
     - Create `linenumber` and `chapter` columns.
 
+    ```{r}
+    austen_books() %>%
+      group_by(book)%>%
+      mutate(linenumber=row_number(),
+             is_chapter=str_detect(text, regex("^chapter [\\divxlc]", ignore_case = TRUE)),
+              chapter=cumsum(is_chapter))%>%
+      select(text,book,linenumber,chapter)
+    ```
+
 2.  **Tokenization**
 
     - Use `unnest_tokens()` to tokenize text into individual words.
