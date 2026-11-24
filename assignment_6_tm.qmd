@@ -102,6 +102,12 @@ bing<- emma_words %>%
   select(word,n)
 
 bing %>%
+  mutate(word=reorder(word,n))%>%
+  ggplot(aes(n,word))+
+  geom_col(fill="blue")+
+  labs(y=NULL)
+
+bing %>%
   with(wordcloud(word, n, max.words = 100,
                  random.order = FALSE,
                  colors = brewer.pal(8, "Dark2")))
@@ -118,6 +124,12 @@ afinn %>%
                  random.order = FALSE,
                  colors = brewer.pal(8, "Dark2")))
 
+afinn %>%
+  mutate(word=reorder(word,n))%>%
+  ggplot(aes(n,word))+
+  geom_col(fill="green")+
+  labs(y=NULL)
+
 #NRC join with Emma
 nrc <-emma_words %>%
   inner_join(nrc_filter, by = "word")%>%
@@ -130,10 +142,11 @@ nrc %>%
                  random.order = FALSE,
                  colors = brewer.pal(8, "Dark2")))
 
-```
-
-```{r}
-
+nrc %>%
+  mutate(word=reorder(word,n))%>%
+  ggplot(aes(n,word))+
+  geom_col(fill="red")+
+  labs(y=NULL)
 ```
 
 1.  
