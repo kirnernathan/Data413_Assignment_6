@@ -35,6 +35,7 @@ library(janeaustenr)
 library(textdata)
 library(stringi)
 library(wordcloud)
+library(ggplot2)
 ```
 
 ### **Tasks**:
@@ -93,28 +94,51 @@ get_sentiments("bing") %>%
 emma_words <- austen_books() %>%
   filter(book == "Emma") %>%
   unnest_tokens(word, text)
-
+#BING join with emma
 bing<- emma_words %>%
   inner_join(bing_filter, by = "word")%>%
-  count(word, sentiment, sort = TRUE)
-
-
-afinn<- emma_words %>%
-  inner_join(afinn_filter, by = "word")%>%
-  count(word, value, sort = TRUE)
-
-nrc <-emma_words %>%
-  inner_join(nrc_filter, by = "word")%>%
-  count(word, sentiment, sort = TRUE)
-
-emma_sentiments <- bind_rows(bing, afinn, nrc) %>%
+  count(word, sentiment, sort = TRUE)%>%
   filter(n > 50)%>%
   select(word,n)
 
-emma_sentiments
+bing %>%
+  with(wordcloud(word, n, max.words = 100,
+                 random.order = FALSE,
+                 colors = brewer.pal(8, "Dark2")))
+
+#AFINN join with emma
+afinn<- emma_words %>%
+  inner_join(afinn_filter, by = "word")%>%
+  count(word, value, sort = TRUE)%>%
+  filter(n > 50)%>%
+  select(word,n)
+
+afinn %>%
+  with(wordcloud(word, n, max.words = 100,
+                 random.order = FALSE,
+                 colors = brewer.pal(8, "Dark2")))
+
+#NRC join with Emma
+nrc <-emma_words %>%
+  inner_join(nrc_filter, by = "word")%>%
+  count(word, sentiment, sort = TRUE)%>%
+  filter(n > 50)%>%
+  select(word,n)
+
+nrc %>%
+  with(wordcloud(word, n, max.words = 100,
+                 random.order = FALSE,
+                 colors = brewer.pal(8, "Dark2")))
+
 ```
 
-1.  **Push to GitHub**
+```{r}
+
+```
+
+1.  
+
+2.  **Push to GitHub**
 
     - Push your complete rendred qmd (`.html` file) to a **GitHub repository**.
 
